@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 
-const DB_URL = process.env.MONGODB_URI
+const DB_URI = process.env.MONGODB_URI
 
-if (!DB_URL) {
+if (!DB_URI) {
   throw new Error(
     'Please define the DB_URL environment variable inside .env.local'
   )
@@ -25,7 +25,7 @@ const dbConnect = async () => {
       useUnifiedTopology: true,
     }
 
-    cached.promise = mongoose.connect(DB_URL, options).then(mongoose => {
+    cached.promise = mongoose.connect(DB_URI, options).then(mongoose => {
       return mongoose
     })
   }

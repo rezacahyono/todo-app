@@ -1,13 +1,11 @@
 import { useState } from 'react'
-import axios from 'axios'
+import api from './api/axios.config'
 import styles from '../styles/Home.module.css'
 import Head from 'next/head'
 
-const url = process.env.DEV_URL
 export default function Home(props) {
   const [tasks, setTasks] = useState(props.tasks)
   const [task, setTask] = useState({ task: '' })
-
   const handleChange = ({ currentTarget: input }) => {
     input.value === ''
       ? setTask({ task: '' })
@@ -18,7 +16,7 @@ export default function Home(props) {
     e.preventDefault()
     try {
       if (task._id) {
-        const { data } = await axios.put(url + '/' + task._id, {
+        const { data } = await api.put(`api/task/${task._id}`, {
           task: task.task,
         })
         const originalTasks = [...tasks]
@@ -26,12 +24,10 @@ export default function Home(props) {
         originalTasks[index] = data.data
         setTasks(originalTasks)
         setTask({ task: '' })
-        console.log(data.message)
       } else {
-        const { data } = await axios.post(url, task)
+        const { data } = await api.post('api/task', task)
         setTasks(prev => [...prev, data.data])
         setTask({ task: '' })
-        console.log(data.message)
       }
     } catch (error) {
       console.log(error)
@@ -47,12 +43,11 @@ export default function Home(props) {
     try {
       const originalTasks = [...tasks]
       const index = originalTasks.findIndex(t => t._id === id)
-      const { data } = await axios.put(url + '/' + id, {
+      const { data } = await api.put(`api/task/${id}`, {
         completed: !originalTasks[index].completed,
       })
       originalTasks[index] = data.data
       setTasks(originalTasks)
-      console.log(data.message)
     } catch (error) {
       console.log(error)
     }
@@ -60,9 +55,8 @@ export default function Home(props) {
 
   const deleteTask = async id => {
     try {
-      const { data } = await axios.delete(url + '/' + id)
+      await api.delete(`api/task/${id}`)
       setTasks(prev => prev.filter(task => task._id !== id))
-      console.log(data.message)
     } catch (error) {
       console.log(error)
     }
@@ -125,7 +119,7 @@ export default function Home(props) {
 }
 
 export const getServerSideProps = async () => {
-  const { data } = await axios.get(url)
+  const { data } = await api.get(`/task`)
   return {
     props: {
       tasks: data.data,

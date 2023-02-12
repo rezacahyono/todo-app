@@ -2,9 +2,8 @@ import Task from '../../../models/Task'
 import dbConnect from '@/db/db.connect'
 
 const routes = async (req, res) => {
-  const { method } = req
-
   await dbConnect()
+  const { method } = req
 
   if (method === 'POST') {
     try {
