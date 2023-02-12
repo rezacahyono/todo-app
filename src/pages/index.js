@@ -3,8 +3,7 @@ import axios from 'axios'
 import styles from '../styles/Home.module.css'
 import Head from 'next/head'
 
-const url = 'http://localhost:3000/api/task'
-
+const url = process.env.DEV_URL
 export default function Home(props) {
   const [tasks, setTasks] = useState(props.tasks)
   const [task, setTask] = useState({ task: '' })
@@ -71,9 +70,9 @@ export default function Home(props) {
 
   return (
     <main className={styles.main}>
-       <Head>
-      <title>ToDo</title>
-    </Head>
+      <Head>
+        <title>ToDo</title>
+      </Head>
       <h1 className={styles.heading}>TO-DO</h1>
       <div className={styles.container}>
         <form onSubmit={addTask} className={styles.form_container}>
