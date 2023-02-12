@@ -71,9 +71,9 @@ export default function Home(props) {
 
   return (
     <main className={styles.main}>
-      <Head>
-        <title>ToDo</title>
-      </Head>
+       <Head>
+      <title>ToDo</title>
+    </Head>
       <h1 className={styles.heading}>TO-DO</h1>
       <div className={styles.container}>
         <form onSubmit={addTask} className={styles.form_container}>
